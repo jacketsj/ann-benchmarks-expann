@@ -10,5 +10,5 @@ float:
       base:
         args: |
           [{"M":70}]
-        query-args: |
+        query_args: |
           [{"Ls":50}]
