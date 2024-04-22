@@ -3,9 +3,9 @@ float:
     base_args: ['@metric']
     constructor: ExpAnnWrapper
     disabled: false
-    docker_tag: ann-benchmarks-expANN
-    module: ann_benchmarks.algorithms.expANN
-    name: expANN
+    docker_tag: ann-benchmarks-expann
+    module: ann_benchmarks.algorithms.expann
+    name: expann
     run_groups:
       base:
         arg_groups: [
