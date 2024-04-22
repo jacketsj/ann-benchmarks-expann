@@ -14,7 +14,7 @@ class ExpAnnWrapper(BaseANN):
         self._ortho_bias = index_param["ortho_bias"]
         self._prune_overflow = index_param["prune_overflow"]
         self.engine = expann_py.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._ortho_factor, self._ortho_bias, self._prune_overflow)
-        self.name = self.engine.name()
+        self.name = "expANN Anti-Topo Engine"
         self.res = None
         self.metric = metric
 
