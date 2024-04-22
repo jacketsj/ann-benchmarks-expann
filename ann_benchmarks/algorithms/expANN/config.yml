@@ -8,7 +8,31 @@ float:
     name: expANN
     run_groups:
       base:
-        args: |
-          [{"M":70}]
-        query_args: |
-          [{"Ls":50}]
+        arg_groups: [
+          {M: 20, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 20, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 20, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 40, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 40, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 40, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 60, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 60, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 60, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 90, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 90, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 90, ef_construction: 500, ortho_count: 1, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 20, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 20, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 20, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 40, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 40, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 40, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 60, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 60, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 60, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3},
+          {M: 90, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 0},
+          {M: 90, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 1},
+          {M: 90, ef_construction: 250, ortho_count: 3, ortho_factor: 0.5, ortho_bias: 0.0, prune_overflow: 3}
+        ]
+        args: {}
+        query_args: [[10, 20, 30, 40, 80, 120]]

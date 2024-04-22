@@ -6,10 +6,14 @@ from ..base.module import BaseANN
 print(expann_py)
 
 class ExpAnnWrapper(BaseANN):
-    # TODO what are the params to this?? args?
-    def __init__(self, metric, index_param, query_param):
-        # TODO: Actually use the params?
-        self.engine = expann_py.expANN()
+    def __init__(self, metric, index_param):
+        self._m = index_param["M"]
+        self._ef_construction = index_param["ef_construction"]
+        self._ortho_count = index_param["ortho_count"]
+        self._ortho_factor = index_param["ortho_factor"]
+        self._ortho_bias = index_param["ortho_bias"]
+        self._prune_overflow = index_param["prune_overflow"]
+        self.engine = expann_py.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._ortho_factor, self._ortho_bias, self._prune_overflow)
         self.name = self.engine.name()
         self.res = None
         self.metric = metric
@@ -18,11 +22,15 @@ class ExpAnnWrapper(BaseANN):
         dim = X.shape[1]
         for vector in X:
             v = expann_py.Vec(vector.tolist())
+            if self.metric == "angular":
+                v.normalize()
             self.engine.store_vector(v)
         self.engine.build()
 
     def query(self, q, k):
         q = expann_py.Vec(q.to_list())
+        if self.metric == "angular":
+            q.normalize()
         return self.engine.query_k(q, k)
         #query_vectors = []
         #for query_vector in Q:
@@ -36,17 +44,5 @@ class ExpAnnWrapper(BaseANN):
         #        result_index.append(0)
         #self.res = np.array(result_indices)
 
-    def set_query_arguments(self, query_args):
-        # TODO: Actually do this?
-        pass
-
-    def load_index(self, dataset):
-        return False
-
-    def get_results(self):
-        if self.res is None:
-            raise ValueError("Run a query before getting results")
-        return self.res
-
-    def __str__(self):
-        return self.name
+    def set_query_arguments(self, ef_search):
+        self.engine.set_ef_search(ef_search)
