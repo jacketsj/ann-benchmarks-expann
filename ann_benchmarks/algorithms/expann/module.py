@@ -37,6 +37,7 @@ class ExpAnnWrapper(BaseANN):
     def fit(self, X):
         self.dim_unpadded = X.shape[1]
         self.dim_padded, self.epy = self.get_module_for_dim(self.dim_unpadded)
+        print("God padded dim:", self.dim_padded)
         self.engine = self.epy.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._prune_overflow, self._use_compression)
         for vector in X:
             padded_vector = np.pad(vector, (0, self.dim_padded - self.dim_unpadded), 'constant')
