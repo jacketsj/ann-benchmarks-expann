@@ -1,9 +1,13 @@
 import numpy as np
-import expann_py
+import expann_py as ep_nodim
+import expann_py_64
+import expann_py_128
+import expann_py_256
+import expann_py_768
+import expann_py_832
+import expann_py_1024
 
 from ..base.module import BaseANN
-
-print(expann_py)
 
 class ExpAnnWrapper(BaseANN):
     def __init__(self, metric, index_param):
@@ -13,36 +17,48 @@ class ExpAnnWrapper(BaseANN):
         self._ortho_factor = index_param["ortho_factor"]
         self._ortho_bias = index_param["ortho_bias"]
         self._prune_overflow = index_param["prune_overflow"]
-        self.engine = expann_py.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._ortho_factor, self._ortho_bias, self._prune_overflow)
         self.name = "expANN Anti-Topo Engine"
         self.res = None
         self.metric = metric
+        self.modules = {
+            64: expann_py_64,
+            128: expann_py_128,
+            256: expann_py_256,
+            768: expann_py_768,
+            832: expann_py_832,
+            1024: expann_py_1024
+        }
+
+    def get_module_for_dim(d):
+        for dim in sorted(modules.keys()):
+            if d <= dim:
+                return dim, modules[dim]
+        return d, ep_nodim
 
     def fit(self, X):
-        dim = X.shape[1]
+        self.dim_unpadded = X.shape[1]
+        self.dim_padded, self.epy = self.get_module_for_dim(self.dim_unpadded)
+        self.engine = self.epy.AntitopoEngine(self._m,
+                                               self._ef_construction,
+                                               self._ortho_count,
+                                               self._ortho_factor,
+                                               self._ortho_bias,
+                                               self._prune_overflow)
         for vector in X:
-            v = expann_py.Vec(vector.tolist())
+            padded_vector = np.pad(vector, (0, self.dim_padded - self.dim_unpadded), 'constant')
+            v = expann_py.Vec(padded_vector.tolist())
             if self.metric == "angular":
                 v.normalize()
             self.engine.store_vector(v)
         self.engine.build()
 
     def query(self, q, k):
-        q = expann_py.Vec(q.to_list())
+        # TODO pad q here (with 0s)
+        padded_q = np.pad(q, (0, self.dim_padded - len(q)), 'constant')
+        q = self.epy.Vec(padded_q.to_list())
         if self.metric == "angular":
             q.normalize()
         return self.engine.query_k(q, k)
-        #query_vectors = []
-        #for query_vector in Q:
-        #    q = expann_py.Vec(query_vector.tolist())
-        #    query_vectors.append(q)
-        #result_indices = self.engine.query_k_batch(query_vectors, k)
-
-        #max_len = len(max(result_indices, key=len))
-        #for result_index in result_indices:
-        #    while len(result_index) < max_len:
-        #        result_index.append(0)
-        #self.res = np.array(result_indices)
 
     def set_query_arguments(self, ef_search):
         self.engine.set_ef_search(ef_search)
