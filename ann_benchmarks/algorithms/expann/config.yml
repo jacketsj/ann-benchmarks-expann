@@ -7,27 +7,27 @@ float:
     module: ann_benchmarks.algorithms.expann
     name: expann
     run_groups:
-      rg10:
+      rg40_10:
         arg_groups: [{M: 40, ef_construction: 500, ortho_count: 1, prune_overflow: 0, use_compression: True}]
         args: {}
         query_args: [[10, 20, 30, 40, 50, 80, 120]]
-      rg11:
+      rg40_11:
         arg_groups: [{M: 40, ef_construction: 500, ortho_count: 1, prune_overflow: 1, use_compression: True}]
         args: {}
         query_args: [[10, 20, 30, 40, 50, 80, 120]]
-      rg13:
+      rg40_13:
         arg_groups: [{M: 40, ef_construction: 500, ortho_count: 1, prune_overflow: 3, use_compression: True}]
         args: {}
         query_args: [[10, 20, 30, 40, 50, 80, 120]]
-      rg00:
+      rg40_00:
         arg_groups: [{M: 40, ef_construction: 500, ortho_count: 1, prune_overflow: 0, use_compression: False}]
         args: {}
         query_args: [[10, 20, 30, 40, 50, 80, 120]]
-      rg01:
+      rg40_01:
         arg_groups: [{M: 40, ef_construction: 500, ortho_count: 1, prune_overflow: 1, use_compression: False}]
         args: {}
         query_args: [[10, 20, 30, 40, 50, 80, 120]]
-      rg03:
+      rg40_03:
         arg_groups: [{M: 40, ef_construction: 500, ortho_count: 1, prune_overflow: 3, use_compression: False}]
         args: {}
         query_args: [[10, 20, 30, 40, 50, 80, 120]]
