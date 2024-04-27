@@ -40,7 +40,7 @@ class ExpAnnWrapper(BaseANN):
         self.engine = self.epy.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._prune_overflow, self._use_compression)
         for vector in X:
             padded_vector = np.pad(vector, (0, self.dim_padded - self.dim_unpadded), 'constant')
-            v = expann_py.Vec(padded_vector.tolist())
+            v = self.epy.Vec(padded_vector.tolist())
             if self.metric == "angular":
                 v.normalize()
             self.engine.store_vector(v)
