@@ -28,20 +28,16 @@ class ExpAnnWrapper(BaseANN):
             1024: expann_py_1024
         }
 
-    def get_module_for_dim(d):
-        for dim in sorted(modules.keys()):
+    def get_module_for_dim(self, d):
+        for dim in sorted(self.modules.keys()):
             if d <= dim:
-                return dim, modules[dim]
+                return dim, self.modules[dim]
         return d, ep_nodim
 
     def fit(self, X):
         self.dim_unpadded = X.shape[1]
         self.dim_padded, self.epy = self.get_module_for_dim(self.dim_unpadded)
-        self.engine = self.epy.AntitopoEngine(self._m,
-                                              self._ef_construction,
-                                              self._ortho_count,
-                                              self._prune_overflow,
-                                              self._use_compression)
+        self.engine = self.epy.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._prune_overflow, self._use_compression)
         for vector in X:
             padded_vector = np.pad(vector, (0, self.dim_padded - self.dim_unpadded), 'constant')
             v = expann_py.Vec(padded_vector.tolist())
