@@ -3,9 +3,8 @@ import expann_py as ep_nodim
 import expann_py_64
 import expann_py_128
 import expann_py_256
-import expann_py_768
 import expann_py_832
-import expann_py_1024
+import expann_py_960
 
 from ..base.module import BaseANN
 
@@ -23,9 +22,8 @@ class ExpAnnWrapper(BaseANN):
             64: expann_py_64,
             128: expann_py_128,
             256: expann_py_256,
-            768: expann_py_768,
             832: expann_py_832,
-            1024: expann_py_1024
+            960: expann_py_960
         }
 
     def get_module_for_dim(self, d):
@@ -40,22 +38,9 @@ class ExpAnnWrapper(BaseANN):
         print("God padded dim:", self.dim_padded)
         self.engine = self.epy.AntitopoEngine(self._m, self._ef_construction, self._ortho_count, self._prune_overflow, self._use_compression)
         self.engine.store_many_vectors(X, self.metric == "angular")
-        #for vector in X:
-        #    #padded_vector = np.pad(vector, (0, self.dim_padded - self.dim_unpadded), 'constant')
-        #    #v = self.epy.Vec(padded_vector.tolist())
-        #    v = self.epy.Vec(vector)
-        #    if self.metric == "angular":
-        #        v.normalize()
-        #    self.engine.store_vector(v)
         self.engine.build()
 
     def query(self, q, k):
-        # padded_q = np.pad(q, (0, self.dim_padded - len(q)), 'constant')
-        # q = self.epy.Vec(padded_q.tolist())
-        #q = self.epy.Vec(q)
-        #if self.metric == "angular":
-            #q.normalize()
-        #return self.engine.query_k(q, k)
         return self.engine.query_k_numpy(q, k)
 
     def set_query_arguments(self, ef_search):
